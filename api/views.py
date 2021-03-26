@@ -22,3 +22,13 @@ def obtain_token(request):
         token = access_token.to_jwt()
 
         return JsonResponse({'token': token.decode('utf-8')})
+
+
+@csrf_exempt
+def conference_call(request):
+    response = VoiceResponse()
+    room_name = request.POST['roomName']
+    dial = Dial()
+    dial.conference(room_name)
+    response.append(dial)
+    return HttpResponse(response.to_xml(), content_type='text/xml')
